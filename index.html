@@ -3,98 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Customizable Spin Wheel</title>
   <style>
     body {
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       height: 100vh;
       margin: 0;
-    }
-
-    #wheel-container {
-      position: relative;
     }
 
     #wheel {
       width: 300px;
       height: 300px;
-      border: 5px solid #333;
+      border: 10px solid #333;
       border-radius: 50%;
+      position: relative;
+      animation: spin 4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(720deg);
+      }
+    }
+
+    #names {
       position: absolute;
-      transform-origin: 50% 50%;
-      transition: transform 3s ease-out;
-    }
-
-    .wheel-section {
-      position: absolute;
-      width: 50%;
-      height: 50%;
-      clip-path: polygon(50% 50%, 100% 0, 100% 100%);
-    }
-
-    .section-1 {
-      background-color: #ff5252;
-      transform: rotate(0deg);
-    }
-
-    .section-2 {
-      background-color: #3498db;
-      transform: rotate(60deg);
-    }
-
-    .section-3 {
-      background-color: #2ecc71;
-      transform: rotate(120deg);
-    }
-
-    .section-4 {
-      background-color: #f39c12;
-      transform: rotate(180deg);
-    }
-
-    .section-5 {
-      background-color: #9b59b6;
-      transform: rotate(240deg);
-    }
-
-    .section-6 {
-      background-color: #34495e;
-      transform: rotate(300deg);
-    }
-
-    #spin-button {
-      position: absolute;
-      bottom: 20px;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
+      transform: translate(-50%, -50%);
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
-<div id="wheel-container">
-  <div id="wheel">
-    <div class="wheel-section section-1"></div>
-    <div class="wheel-section section-2"></div>
-    <div class="wheel-section section-3"></div>
-    <div class="wheel-section section-4"></div>
-    <div class="wheel-section section-5"></div>
-    <div class="wheel-section section-6"></div>
-  </div>
-  <button id="spin-button" onclick="spinWheel()">Spin</button>
+<div id="wheel">
+  <div id="names"></div>
 </div>
 
 <script>
-  function spinWheel() {
-    const wheel = document.getElementById('wheel');
-    const randomDegrees = Math.floor(Math.random() * 360) + 360 * 5; // Spin at least 5 full rotations
-    wheel.style.transform = `rotate(${randomDegrees}deg)`;
-  }
+  const names = ["Name1", "Name2", "Name3", "Name4", "Name5", "Name6", "Name7", "Name8", "Name9", "Name10"];
+
+  const wheel = document.getElementById("wheel");
+  const namesDisplay = document.getElementById("names");
+
+  // Populate the wheel with names
+  names.forEach(name => {
+    const span = document.createElement("span");
+    span.innerText = name;
+    namesDisplay.appendChild(span);
+  });
+
+  // Spin the wheel on click
+  wheel.addEventListener("click", () => {
+    const randomRotation = Math.floor(Math.random() * 360);
+    wheel.style.transform = `rotate(${randomRotation + 720}deg)`;
+
+    // Display the selected name after the wheel stops spinning
+    setTimeout(() => {
+      const selectedIndex = Math.floor(randomRotation / 36) % names.length;
+      alert(`Selected Name: ${names[selectedIndex]}`);
+    }, 4000);
+  });
 </script>
 
 </body>
