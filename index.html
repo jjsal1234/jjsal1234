@@ -58,6 +58,13 @@
       z-index: 2;
     }
 
+    #names span {
+      position: absolute;
+      transform-origin: 50% 100%;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
     @keyframes spin {
       to {
         transform: rotate(720deg);
@@ -80,9 +87,11 @@
   const namesDisplay = document.getElementById("names");
 
   // Populate the wheel with names
-  names.forEach(name => {
+  names.forEach((name, index) => {
     const span = document.createElement("span");
     span.innerText = name;
+    span.style.color = `hsl(${(index / names.length) * 360}, 100%, 50%)`;
+    span.style.transform = `rotate(${(index / names.length) * 360}deg)`;
     namesDisplay.appendChild(span);
   });
 
@@ -90,12 +99,6 @@
   wheel.addEventListener("click", () => {
     const randomRotation = Math.floor(Math.random() * 360);
     wheel.style.transform = `rotate(${randomRotation + 720}deg)`;
-
-    // Display the selected name after the wheel stops spinning
-    setTimeout(() => {
-      const selectedIndex = Math.floor(randomRotation / 36) % names.length;
-      alert(`Selected Name: ${names[selectedIndex]}`);
-    }, 4000);
   });
 </script>
 
